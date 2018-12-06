@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BullsAndCows.h" />
     <ClInclude Include="FBullCowGame.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>

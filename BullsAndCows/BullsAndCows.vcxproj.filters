@@ -21,12 +21,18 @@
     <ClInclude Include="FBullCowGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BullsAndCows.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BullsAndCows.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FBullCowGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

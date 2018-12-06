@@ -5,14 +5,25 @@
 #include <iostream>
 #include <string>
 #include "FBullCowGame.h"
+#include "BullsAndCows.h"
 
 
 
 
+using FText = std::string;
+using int32 = int;
 
-constexpr int WORD_LENGTH = 5;
-constexpr int NUM_TURNS = 10;
-const std::string GUESSWORD = "crazy";
+//Define Methods
+void PlayGame();
+void GameIntro();
+FText Get_Guess_String();
+void InformGuessResult(FText guess, int32 numBulls, int32 numCows);
+bool AskToPlayAgain();
+
+
+FBullCowGame BCGame;
+
+const FText HIDDENWORD = "crazy";
 int main()
 {
 	GameIntro();
@@ -29,20 +40,22 @@ int main()
 }
 void PlayGame()
 {
-	FBullCowGame BCGame;
+	BCGame.Reset();
+	
 	bool CorrectWord = false;
 	int turnNumber = 0;
-	while (CorrectWord == false && turnNumber <= NUM_TURNS)
-	{
-		int numBulls = 0;
-		int numCows = 0;
-		std::string guess = Get_Guess_String();
-		std::cout << "Your guess was: " << guess << "\n";
-		CheckWord(guess, numBulls, numCows);
-		InformGuessResult(numBulls, numCows);
-		if (numBulls == WORD_LENGTH) {
-			CorrectWord = true;
+	while (!BCGame.IsGameWon()) {
+		//Get the Users's Guess String
+		FText guess = Get_Guess_String();
+		//Have game check the guess
+		if (BCGame.CheckGuessValid(guess)) {
+			BCGame.SubmitWordToGame(guess);
+			FBullCowGame::FBullCowCount counter = BCGame.SubmitWordToGame(guess);
+			InformGuessResult(guess, counter.Bulls,counter.Cows);
 		}
+
+		// Tell the user how they did in the guess
+		
 		turnNumber++;
 	}
 	std::cout << "WOO HOO You win!";
@@ -51,34 +64,27 @@ void PlayGame()
 //Introduce the game to the player
 void GameIntro(){
 	std::cout << "Welcome to Cows and Bulls\n";
-	std::cout << "Please enter a " << WORD_LENGTH << " letter isogram:";
+	
 	return;
 }
 //get the guess from the player
-std::string Get_Guess_String(){
-	std::string user_guess = "";
+FText Get_Guess_String(){
+	std::cout << "Please enter a " << BCGame.GetWordLength() << " letter isogram:";
+	FText user_guess = "";
 	getline(std::cin ,user_guess);
 	return user_guess;
 }
-void CheckWord(std::string guess,int& numBulls,int& numCows) {
-	for (size_t i = 0; i < guess.length(); i++) {
-		if (guess.at(i) == GUESSWORD.at(i)) {
-			numBulls++;
-		}
-		else if (GUESSWORD.find_first_of(guess.at(i)) > -1) {
-			numCows++;
-					}
-	}
-	return;
-}
-void InformGuessResult(int numBulls, int numCows) {
+
+void InformGuessResult(FText guess, int32 numBulls, int32 numCows)
+{
+	std::cout << "Your guess was: " << guess << "\n";
 	std::cout << "NumBulls: " << numBulls << " NumCows: " << numCows << "\n";
 	return;
 }
 bool AskToPlayAgain()
 {
 	std::cout << "Do you want to play again? Y/N: ";
-	std::string response = "";
+	FText response = "";
 	getline(std::cin , response);
 	bool returnVal = false;
 	if (response[0] == 'Y' || response[0] =='y')

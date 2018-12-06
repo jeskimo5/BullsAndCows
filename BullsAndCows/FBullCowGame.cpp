@@ -1,6 +1,13 @@
 #include "pch.h"
 #include "FBullCowGame.h"
 
+constexpr int WORD_LENGTH = 5;
+constexpr int NUM_TURNS = 10;
+const std::string HIDDENWORD = "crazy";
+
+using FString = std::string;
+using int32 = int;
+
 
 FBullCowGame::FBullCowGame()
 {
@@ -9,9 +16,15 @@ FBullCowGame::FBullCowGame()
 
 void FBullCowGame::Reset()
 {
-	MyMaxTries = 5;
+	MyMaxTries = 6;
 	MyCurrentTry = 1;
+	GameIsWon = false;
 	return;
+}
+
+int32 FBullCowGame::GetWordLength() const
+{
+	return WORD_LENGTH;
 }
 
 int FBullCowGame::GetMaxTries() const
@@ -24,12 +37,38 @@ int FBullCowGame::GetCurrentTry() const
 	return MyCurrentTry;
 }
 
+
 bool FBullCowGame::IsGameWon() const
 {
-	return false;
+	return GameIsWon;
+}
+bool FBullCowGame::CheckGuessValid(FString guess)
+{
+	bool returnVal = false;
+	if (guess.length() == HIDDENWORD.length()) {
+		returnVal = true;
+	}
+
+	return returnVal;
 }
 
-bool FBullCowGame::CheckGuessValid(std::string Guess)
+FBullCowGame::FBullCowCount FBullCowGame::SubmitWordToGame(FString Guess)
 {
-	return false;
+	FBullCowCount counter;
+	// for each letter in the guess
+	for (size_t i = 0; i < Guess.length(); i++) {
+		//is the letter in the right spot?
+		if (Guess.at(i) == HIDDENWORD.at(i)) {
+			counter.Bulls++;
+		}
+		//or is the letter contained in the word at all?
+		else if (HIDDENWORD.find_first_of(Guess.at(i)) > -1) {
+			counter.Cows++;
+		}
+	}
+	if (counter.Bulls == Guess.length()) {
+		GameIsWon = true;
+	}
+	return counter;
+
 }
