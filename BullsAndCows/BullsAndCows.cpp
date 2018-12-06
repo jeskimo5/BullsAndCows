@@ -44,6 +44,7 @@ void PlayGame()
 	
 	bool CorrectWord = false;
 	int turnNumber = 0;
+	//While we havn't won the game'
 	while (!BCGame.IsGameWon()) {
 		//Get the Users's Guess String
 		FText guess = Get_Guess_String();
@@ -51,14 +52,15 @@ void PlayGame()
 		if (BCGame.CheckGuessValid(guess)) {
 			BCGame.SubmitWordToGame(guess);
 			FBullCowGame::FBullCowCount counter = BCGame.SubmitWordToGame(guess);
+			// Tell the user how they did in the guess
 			InformGuessResult(guess, counter.Bulls,counter.Cows);
 		}
 
-		// Tell the user how they did in the guess
+		
 		
 		turnNumber++;
 	}
-	std::cout << "WOO HOO You win!";
+	std::cout << "WOO HOO You win!\n";
 }
 
 //Introduce the game to the player
