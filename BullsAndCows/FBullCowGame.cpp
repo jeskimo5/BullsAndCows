@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "FBullCowGame.h"
 
-constexpr int WORD_LENGTH = 5;
+
 constexpr int NUM_TURNS = 10;
 const std::string HIDDENWORD = "crazy";
 
@@ -24,7 +24,7 @@ void FBullCowGame::Reset()
 
 int32 FBullCowGame::GetWordLength() const
 {
-	return WORD_LENGTH;
+	return HIDDENWORD.length();
 }
 
 int FBullCowGame::GetMaxTries() const
@@ -42,14 +42,22 @@ bool FBullCowGame::IsGameWon() const
 {
 	return GameIsWon;
 }
-bool FBullCowGame::CheckGuessValid(FString guess)
+EWordStatus FBullCowGame::CheckGuessValid(FString guess)
 {
-	bool returnVal = false;
-	if (guess.length() == HIDDENWORD.length()) {
-		returnVal = true;
+	if (guess.length() != HIDDENWORD.length()) {
+		return EWordStatus::Wrong_Length;
 	}
-
-	return returnVal;
+	else if (false) {
+		return EWordStatus::Not_Isogram;
+	}
+	else if (false)
+	{
+		return EWordStatus::Not_Lowercase;
+	}
+	else 
+	{
+		return EWordStatus::OK;
+	}
 }
 
 FBullCowGame::FBullCowCount FBullCowGame::SubmitWordToGame(FString Guess)

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 #include "FBullCowGame.h"
-#include "BullsAndCows.h"
+
 
 
 
@@ -49,16 +49,28 @@ void PlayGame()
 		//Get the Users's Guess String
 		FText guess = Get_Guess_String();
 		//Have game check the guess
-		if (BCGame.CheckGuessValid(guess)) {
+		EWordStatus wordStatus = BCGame.CheckGuessValid(guess); 
+		switch (wordStatus)
+		{
+		case EWordStatus::OK:
+		{	
 			BCGame.SubmitWordToGame(guess);
 			FBullCowGame::FBullCowCount counter = BCGame.SubmitWordToGame(guess);
 			// Tell the user how they did in the guess
-			InformGuessResult(guess, counter.Bulls,counter.Cows);
+			InformGuessResult(guess, counter.Bulls, counter.Cows); 
+			turnNumber++;
 		}
-
+		case EWordStatus::Not_Isogram:
+			break;	
+		case EWordStatus::Wrong_Length:
+			std::cout << "Incorrect Guess Length\n";
+		case EWordStatus::Not_Lowercase:
+			break;
+		default:
+			break;
+		} 
 		
 		
-		turnNumber++;
 	}
 	std::cout << "WOO HOO You win!\n";
 }
